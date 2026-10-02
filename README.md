@@ -86,7 +86,7 @@ editor and deploy again. Pushing to GitHub updates the screens but not the funct
   recreated (not just renamed), update the ID there.
 - Property names in Notion are used by the function. Renaming **Stage**, **Owner**,
   **Next Step**, **Follow Up By**, **Disco Date**, **Type**, **Date**, **Person**,
-  or **Met By** will break saving until `index.ts` is updated to match.
+  **Met By**, or **Meeting Notes** will break saving until `index.ts` is updated to match.
 
 ## Preview locally
 

@@ -519,8 +519,8 @@ async function viewMeeting(type, params) {
       </div>
 
       ${isDisco ? `
-      <div class="stack"><label for="story">Their story</label>
-        <textarea id="story" rows="3" placeholder="Who are they, and how did they come to know the Lord?"></textarea></div>
+      <div class="stack"><label for="story">Meeting notes</label>
+        <textarea id="story" rows="3" placeholder="What did you talk about? Their story, where they are with the Lord, anything worth remembering."></textarea></div>
       <div class="stack"><label for="interest">Missions interest</label>
         <textarea id="interest" rows="3" placeholder="Where, who, or what kind of work are they drawn to?"></textarea></div>
       <div class="stack"><label for="prayer">Prayer</label>
@@ -709,7 +709,7 @@ async function viewPerson(params) {
       ${meetings.length ? `<div class="card pad">${meetings.map((m) => `
         <div class="meeting stack">
           <div class="row"><b>${esc(m.type)} · ${esc(fmt(m.date, { month: 'short', day: 'numeric', year: 'numeric' }))}</b><span class="tiny muted">${esc(m.metBy.map(firstName).join(', '))}</span></div>
-          ${[['', m.notes], ['Story', m.story], ['Missions interest', m.interest], ['Prayer', m.prayer]].filter(([, v]) => v).map(([k, v]) =>
+          ${[['', m.notes], ['Meeting notes', m.story], ['Missions interest', m.interest], ['Prayer', m.prayer]].filter(([, v]) => v).map(([k, v]) =>
             `<div class="small pre">${k ? `<span class="muted">${k}:</span> ` : ''}${esc(v)}</div>`).join('')}
           ${m.nextStep ? `<div class="tiny muted">Next step: ${esc(m.nextStep)}${m.followUpBy ? ' · by ' + esc(fmt(m.followUpBy)) : ''}</div>` : ''}
         </div>`).join('')}</div>`

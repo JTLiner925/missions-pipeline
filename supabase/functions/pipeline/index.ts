@@ -208,7 +208,7 @@ function meetingSummary(m: any, team: Member[]) {
     date: P.date(m, "Date"),
     metBy: names(P.rel(m, "Met By"), team),
     notes: P.text(m, "Notes"),
-    story: P.text(m, "Their Story"),
+    story: P.text(m, "Meeting Notes"),
     interest: P.text(m, "Missions Interest"),
     prayer: P.text(m, "Prayer"),
     nextStep: P.text(m, "Next Step"),
@@ -377,7 +377,7 @@ async function actPerson(body: any, me: Member, team: Member[]) {
       interests: P.text(p, "Interests"),
       howWeMet: P.select(p, "How We Met"),
       potentialNextSteps: P.multi(p, "Potential Next Steps"),
-      story: P.text(p, "Their Story"),
+      story: P.text(p, "Meeting Notes"),
       prayer: P.text(p, "Prayer"),
       notionUrl: p.url,
     },
@@ -462,7 +462,7 @@ async function actAddMeeting(body: any, me: Member, team: Member[]) {
     "Source": W.select("App"),
   };
   if (notes) mProps["Notes"] = W.text(notes);
-  if (story) mProps["Their Story"] = W.text(story);
+  if (story) mProps["Meeting Notes"] = W.text(story);
   if (interest) mProps["Missions Interest"] = W.text(interest);
   if (prayer) mProps["Prayer"] = W.text(prayer);
   if (nextStep) mProps["Next Step"] = W.text(nextStep);
@@ -485,7 +485,7 @@ async function actAddMeeting(body: any, me: Member, team: Member[]) {
   if (type === "Disco") {
     if (!P.date(p, "Disco Date")) pProps["Disco Date"] = W.date(date);
     if (!currentStage || PRE_DISCO.includes(currentStage)) pProps["Stage"] = W.select(AFTER_DISCO);
-    if (story) pProps["Their Story"] = W.text(story);
+    if (story) pProps["Meeting Notes"] = W.text(story);
     if (interest) pProps["Interests"] = W.text(interest);
   }
   if (prayer) pProps["Prayer"] = W.text(prayer);
