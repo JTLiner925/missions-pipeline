@@ -14,10 +14,10 @@ const team = [
 ];
 
 const people = [
-  { id: 'p1', name: 'Hannah Reyes', stage: 'Disco Done', readiness: '🟢', ownerIds: ['t1'], nextStep: 'Send Missions Class sign-up', followUpBy: iso(-3), discoDate: iso(-17), added: iso(-30) },
+  { id: 'p1', name: 'Hannah Reyes', stage: 'Engaging Discover', readiness: '🟢', ownerIds: ['t1'], nextStep: 'Send Missions Class sign-up', followUpBy: iso(-3), discoDate: iso(-17), added: iso(-30) },
   { id: 'p2', name: 'Mia Thompson', stage: 'Engaging Discover', readiness: '🟡', ownerIds: ['t1'], nextStep: 'Check in', followUpBy: iso(5), discoDate: iso(-90), added: iso(-120) },
   { id: 'p3', name: 'Elena Cruz', stage: 'New Contact', readiness: '🟢', ownerIds: ['t1'], nextStep: 'Schedule her disco meeting', followUpBy: iso(8), discoDate: '', added: iso(-4) },
-  { id: 'p4', name: 'Daniel Okafor', stage: 'Disco Done', readiness: '🟢', ownerIds: ['t3'], nextStep: 'Invite to Nation\'s Prayer', followUpBy: iso(-6), discoDate: iso(-20), added: iso(-40) },
+  { id: 'p4', name: 'Daniel Okafor', stage: 'Engaging Discover', readiness: '🟢', ownerIds: ['t3'], nextStep: 'Invite to Nation\'s Prayer', followUpBy: iso(-6), discoDate: iso(-20), added: iso(-40) },
   { id: 'p5', name: 'Abby Lin', stage: 'Disco Scheduled', readiness: '🟢', ownerIds: ['t2'], nextStep: 'Disco meeting', followUpBy: iso(5), discoDate: '', added: iso(-10) },
 ];
 
@@ -65,7 +65,7 @@ export async function mockApi(action, body, session) {
     case 'options':
       return {
         team: team.map(({ id, name }) => ({ id, name })),
-        stages: ['New Contact', 'Disco Scheduled', 'Disco Done', 'Engaging Discover', 'Committed (Develop — ICT)', 'Engaging (Post — ICT)', 'Committed-Long Term (12-18 mo out)', 'Launched to field!', 'Returned from the field', 'Exited ICT', 'Offramp'],
+        stages: ['New Contact', 'Disco Scheduled', 'Engaging Discover', 'Committed (Develop — ICT)', 'Engaging (Post — ICT)', 'Committed-Long Term (12-18 mo out)', 'Launched to field!', 'Returned from the field', 'Exited ICT', 'Offramp'],
         involvement: [{ id: 'i1', name: 'Living Sent · Fall 2026' }, { id: 'i2', name: 'DMC · Fall 2026' }],
         canPickOwner: staff,
       };
@@ -99,7 +99,7 @@ export async function mockApi(action, body, session) {
       meetings.push({ id: 'm' + (meetings.length + 1), personId: p.id, type: body.type, date: body.date, metBy: body.metBy, notes: body.notes, story: body.story, interest: body.interest, prayer: body.prayer, nextStep: body.nextStep, followUpBy: body.followUpBy });
       p.nextStep = body.nextStep; p.followUpBy = body.followUpBy;
       if (body.readiness) p.readiness = body.readiness;
-      if (body.type === 'Disco') { p.discoDate = p.discoDate || body.date; if (['New Contact', 'Disco Scheduled'].includes(p.stage)) p.stage = 'Disco Done'; }
+      if (body.type === 'Disco') { p.discoDate = p.discoDate || body.date; if (['New Contact', 'Disco Scheduled'].includes(p.stage)) p.stage = 'Engaging Discover'; }
       if (body.stage && body.stage !== p.stage && body.type !== 'Disco') p.stage = body.stage;
       return { ok: true, personName: p.name };
     }

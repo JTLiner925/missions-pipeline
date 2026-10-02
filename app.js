@@ -549,10 +549,10 @@ async function viewMeeting(type, params) {
       </div>
       <div class="stack">
         <div class="label">Readiness</div>
-        <div class="grid-4" data-group="readiness">
-          ${['🟢', '🟡', '🔴', '✈️'].map((v) => `<button type="button" class="seg" data-value="${v}" aria-pressed="false">${v}</button>`).join('')}
+        <div class="grid-5" data-group="readiness">
+          ${['🟢', '🟡', '\u23F8\uFE0F', '🔴', '✈️'].map((v) => `<button type="button" class="seg" data-value="${v}" aria-pressed="false">${v}</button>`).join('')}
         </div>
-        <p class="tiny muted">Leave as is unless something changed. ✈️ means finished ICT and could go.</p>
+        <p class="tiny muted">Leave as is unless something changed. ⏸️ stalled: progress has slowed. ✈️ finished ICT and could go.</p>
       </div>
       ${opts.involvement.length ? `
       <div class="stack">
@@ -615,7 +615,7 @@ async function viewMeeting(type, params) {
     const doneWrap = f.querySelector('#doneWrap');
     if (doneWrap) doneWrap.hidden = !person.nextStep;
     f.querySelector('#saveNote').textContent = isDisco
-      ? `Saves to Notion${['New Contact', 'Disco Scheduled', ''].includes(person.stage) ? ` and moves ${firstName(person.name)} to Disco Done` : ''}`
+      ? `Saves to Notion${['New Contact', 'Disco Scheduled', ''].includes(person.stage) ? ` and moves ${firstName(person.name)} to Engaging Discover` : ''}`
       : 'Saves to Notion and updates their follow-up date';
   }
   showPerson();

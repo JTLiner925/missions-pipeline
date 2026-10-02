@@ -20,7 +20,6 @@ const DB = {
 const STAGES = [
   "New Contact",
   "Disco Scheduled",
-  "Disco Done",
   "Engaging Discover",
   "Committed (Develop — ICT)",
   "Engaging (Post — ICT)",
@@ -31,6 +30,10 @@ const STAGES = [
   "Offramp",
 ];
 const PRE_DISCO = ["New Contact", "Disco Scheduled"];
+// Where someone lands once their discovery meeting is logged.
+const AFTER_DISCO = "Engaging Discover";
+// Readiness lights the app may set. "\u23F8\uFE0F" is the pause icon (stalled).
+const APP_READINESS = ["🟢", "🟡", "\u23F8\uFE0F", "🔴", "✈️"];
 const SESSION_DAYS = 90;
 
 const cors = {
@@ -214,6 +217,17 @@ function meetingSummary(m: any, team: Member[]) {
 }
 
 const owns = (me: Member, p: any) => P.rel(p, "Owner").map(clean).includes(me.id);
+
+// Emoji can be stored with or without an invisible "variation selector", so the
+// light is matched against the options that exist in Notion rather than sent as
+// typed. That keeps the app from creating a look-alike duplicate option.
+const bare = (s: string) => s.replace(/\uFE0F/g, "");
+async function readinessOption(wanted: unknown): Promise<string | null> {
+  if (typeof wanted !== "string" || !APP_READINESS.map(bare).includes(bare(wanted))) return null;
+  const db = await notion(`/databases/${DB.people}`);
+  const options: any[] = db.properties?.["Readiness"]?.select?.options ?? [];
+  return options.find((o) => bare(o.name) === bare(wanted))?.name ?? null;
+}
 
 async function discoInfo(personId: string, team: Member[]) {
   const rows = await query(DB.meetings, {
@@ -470,7 +484,7 @@ async function actAddMeeting(body: any, me: Member, team: Member[]) {
   const currentStage = P.select(p, "Stage");
   if (type === "Disco") {
     if (!P.date(p, "Disco Date")) pProps["Disco Date"] = W.date(date);
-    if (!currentStage || PRE_DISCO.includes(currentStage)) pProps["Stage"] = W.select("Disco Done");
+    if (!currentStage || PRE_DISCO.includes(currentStage)) pProps["Stage"] = W.select(AFTER_DISCO);
     if (story) pProps["Their Story"] = W.text(story);
     if (interest) pProps["Interests"] = W.text(interest);
   }
@@ -479,8 +493,9 @@ async function actAddMeeting(body: any, me: Member, team: Member[]) {
     pProps["Stage"] = W.select(body.stage);
     if (body.stage === "Offramp") pProps["Readiness"] = W.select("🚪");
   }
-  if (["🟢", "🟡", "🔴", "✈️"].includes(body.readiness) && pProps["Readiness"] === undefined) {
-    pProps["Readiness"] = W.select(body.readiness);
+  if (pProps["Readiness"] === undefined) {
+    const light = await readinessOption(body.readiness);
+    if (light) pProps["Readiness"] = W.select(light);
   }
   if (Array.isArray(body.potentialNextSteps) && body.potentialNextSteps.length) {
     const allowed = ["Missions Class", "STT", "DMC", "ICT", "Vision Trip"];
