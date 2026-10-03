@@ -150,7 +150,15 @@ async function makeSession(id: string) {
   return `${payload}.${await hmac(payload)}`;
 }
 
-type Member = { id: string; name: string; role: string; active: boolean; code: string };
+type Member = {
+  id: string;
+  name: string;
+  role: string;
+  active: boolean;
+  code: string;
+  failures: number;
+  lockedUntil: string;
+};
 
 async function loadTeam(): Promise<Member[]> {
   const rows = await query(DB.team, {});
@@ -160,6 +168,8 @@ async function loadTeam(): Promise<Member[]> {
     role: P.select(r, "Role"),
     active: P.check(r, "Active"),
     code: P.text(r, "App Code").trim(),
+    failures: r.properties["Failed Sign-ins"]?.number ?? 0,
+    lockedUntil: P.date(r, "Locked Until"),
   }));
 }
 
@@ -249,12 +259,60 @@ async function actTeam(team: Member[]) {
   return { team: team.filter((m) => m.active).map((m) => ({ id: m.id, name: m.name })) };
 }
 
+// Sign-in lockout. Every 5th wrong code in a row locks that name: 15 minutes the
+// first time, doubling each time after, up to a day. The count and lock live on
+// the Team row in Notion, so they survive restarts and the team can clear them.
+const TRIES_PER_LOCK = 5;
+const FIRST_LOCK_MIN = 15;
+const MAX_LOCK_MIN = 24 * 60;
+// One check per name at a time on this instance, so a burst of parallel guesses
+// cannot all slip in before the count is saved.
+const signingIn = new Set<string>();
+
+const minutesLeft = (until: string) => Math.ceil((Date.parse(until) - Date.now()) / 60000);
+
+function lockedError(until: string) {
+  const mins = minutesLeft(until);
+  const wait = mins >= 90 ? `${Math.round(mins / 60)} hours` : `${mins} minute${mins === 1 ? "" : "s"}`;
+  return new HttpError(429, `Too many wrong codes. Try again in ${wait}, or ask the missions team to unlock you.`);
+}
+
+async function saveSignInState(member: Member, failures: number, lockedUntil: string) {
+  await notion(`/pages/${member.id}`, "PATCH", {
+    properties: {
+      "Failed Sign-ins": { number: failures || null },
+      "Locked Until": W.date(lockedUntil),
+    },
+  });
+}
+
 async function actLogin(body: any, team: Member[]) {
   const member = team.find((m) => m.id === clean(str(body.teamId, 40)) && m.active);
   const code = str(body.code, 20);
-  if (!member || !member.code || member.code !== code) {
-    await new Promise((r) => setTimeout(r, 800)); // slows down guessing
+  if (!member || !member.code) {
+    await new Promise((r) => setTimeout(r, 800));
     throw new HttpError(401, "That name and code do not match.");
+  }
+  if (member.lockedUntil && minutesLeft(member.lockedUntil) > 0) throw lockedError(member.lockedUntil);
+  if (signingIn.has(member.id)) throw new HttpError(429, "One moment, then try again.");
+
+  signingIn.add(member.id);
+  try {
+    if (member.code !== code) {
+      const failures = member.failures + 1;
+      let lockedUntil = "";
+      if (failures % TRIES_PER_LOCK === 0) {
+        const mins = Math.min(FIRST_LOCK_MIN * 2 ** (failures / TRIES_PER_LOCK - 1), MAX_LOCK_MIN);
+        lockedUntil = new Date(Date.now() + mins * 60000).toISOString();
+      }
+      await saveSignInState(member, failures, lockedUntil);
+      await new Promise((r) => setTimeout(r, 800)); // slows down guessing
+      if (lockedUntil) throw lockedError(lockedUntil);
+      throw new HttpError(401, "That name and code do not match.");
+    }
+    if (member.failures || member.lockedUntil) await saveSignInState(member, 0, "");
+  } finally {
+    signingIn.delete(member.id);
   }
   return {
     token: await makeSession(member.id),

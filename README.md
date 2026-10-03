@@ -69,6 +69,10 @@ Supabase account holder can do. It uses the same Supabase project as Gospel Trac
   or the function name is not exactly `pipeline`.
 - *"That name and code do not match"*: check the App Code and the Active box on that
   person's Team row.
+- *"Too many wrong codes"*: every 5th wrong code in a row locks that name, for 15
+  minutes the first time and doubling after that (up to a day). To unlock someone,
+  clear **Locked Until** and **Failed Sign-ins** on their Team row. A good sign-in
+  also resets the count.
 - Anything else: Edge Functions → `pipeline` → **Logs** shows the error from Notion.
 
 ### Updating the function later
