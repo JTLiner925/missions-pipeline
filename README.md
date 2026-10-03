@@ -84,6 +84,9 @@ editor and deploy again. Pushing to GitHub updates the screens but not the funct
 
 - The Notion secret also signs the app's sign-in sessions. Replacing it signs everyone out.
 - Sign-in lasts 90 days per phone.
+- The function only answers browsers on `https://jtliner925.github.io` (`APP_ORIGIN` in
+  `index.ts`). If the app moves to another address, change that line and redeploy.
+  The local preview can no longer reach the live function; empty `API_URL` to use demo mode.
 - Every read the function makes was checked against the live workspace on 2026-10-01.
   Saving (new contact, new meeting) has not been run against it yet; step 6 is that test.
 - Database IDs are constants at the top of `index.ts`. If a database is ever

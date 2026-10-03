@@ -36,8 +36,13 @@ const AFTER_DISCO = "Engaging Discover";
 const APP_READINESS = ["🟢", "🟡", "\u23F8\uFE0F", "🔴", "✈️"];
 const SESSION_DAYS = 90;
 
+// Only the published app may call this from a browser. If the app ever moves,
+// change this to its new address (scheme and host only, no path).
+const APP_ORIGIN = "https://jtliner925.github.io";
+
 const cors = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": APP_ORIGIN,
+  "Vary": "Origin",
   "Access-Control-Allow-Headers": "content-type, x-session, authorization, apikey",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
@@ -578,6 +583,8 @@ async function actAddMeeting(body: any, me: Member, team: Member[]) {
 // ---------- Entry point ----------
 
 Deno.serve(async (req) => {
+  const origin = req.headers.get("origin");
+  if (origin && origin !== APP_ORIGIN) return json({ error: "Not allowed from this site." }, 403);
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
   if (!TOKEN) return json({ error: "The app is not connected to Notion yet." }, 503);
