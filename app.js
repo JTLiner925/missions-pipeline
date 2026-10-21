@@ -1,5 +1,5 @@
 import { API_URL, NOTION_URL } from './config.js';
-import { GUIDE_HTML, TEXTS, HUB_URL } from './guide.js';
+import { GUIDE_HTML, TEXTS, HUB_URL, TIMELINE_HTML } from './guide.js';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -287,6 +287,21 @@ function viewGuide() {
               </div>`).join('')}
           </div>`).join('')}
       </div>
+    </details>
+
+    <details class="more">
+      <summary>Discover roadmap</summary>
+      <div class="stack-lg small">
+        <a class="roadmap" href="roadmap.png" target="_blank" rel="noopener">
+          <img src="roadmap.png" alt="Discover roadmap: a road from Start through GTT, Stop and Pray, Nations Class, STT, DMT, Yield, Work Area Ahead and back to GTT, with Head, Heart, Hands (4H) as the destination. Applications for Goer Training Team are due by Christmas.">
+        </a>
+        <p class="tiny muted center">Tap the image to open it full size.</p>
+      </div>
+    </details>
+
+    <details class="more">
+      <summary>Launch timeline</summary>
+      <div class="stack-lg small">${TIMELINE_HTML}</div>
     </details>
 
     <a class="action" href="${esc(HUB_URL)}" target="_blank" rel="noopener"><div><strong>Missions Hub</strong><span>Books, sermons, videos, prayer and evangelism tools to send</span></div></a>

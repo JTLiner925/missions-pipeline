@@ -194,3 +194,33 @@ export const GUIDE_HTML = `
   </div>
 </details>
 `;
+
+// Launch timeline: the stops a goer plans between starting the nine-month
+// group and launching overseas. Built from the team's launch-timeline worksheet.
+const STOPS = [
+  { title: 'Goer training program', time: '9 months', note: 'The nine-month group (ICT) runs alongside everything below.' },
+  { title: 'Talk with parents and family' },
+  { title: 'Talk with church leaders' },
+  { title: 'Perspectives course', time: '15 weeks' },
+  { title: 'Vision trip', time: '2 weeks' },
+  { title: 'Relationships and marriage', note: 'Where this stands can shape the timeline.' },
+  { title: 'Support-raising training', time: '2 days' },
+  { title: 'Support raising', time: '3–6 months' },
+  {
+    title: 'Team and agency requirements',
+    list: ['Agency orientation', 'Language school', 'Cross-cultural training', 'Theological training'],
+  },
+];
+
+export const TIMELINE_HTML = `
+<p class="muted">Every goer's path is different. Use this with them to put real dates on each step, working back from a launch date.</p>
+<ol class="timeline">
+  <li class="tl-end"><b>Beginning of the nine-month group</b><span class="tiny muted">Start date: ________</span></li>
+  ${STOPS.map((s) => `
+  <li><div class="row" style="align-items:baseline"><b>${s.title}</b>${s.time ? `<span class="tag">${s.time}</span>` : ''}</div>
+    ${s.note ? `<span class="tiny muted">${s.note}</span>` : ''}
+    ${s.list ? `<ul class="guide-list tiny">${s.list.map((i) => `<li>${i}</li>`).join('')}</ul>` : ''}
+  </li>`).join('')}
+  <li class="tl-end"><b>Launch overseas</b><span class="tiny muted">Launch date: ________</span></li>
+</ol>
+`;
