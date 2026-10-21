@@ -289,15 +289,13 @@ function viewGuide() {
       </div>
     </details>
 
-    <details class="more">
-      <summary>Discover roadmap</summary>
-      <div class="stack-lg small">
+    <div class="stack-lg small">
+        <h2>Discover roadmap</h2>
         <a class="roadmap" href="roadmap.png" target="_blank" rel="noopener">
           <img src="roadmap.png" alt="Discover roadmap: a road from Start through GTT, Stop and Pray, Nations Class, STT, DMT, Yield, Work Area Ahead and back to GTT, with Head, Heart, Hands (4H) as the destination. Applications for Goer Training Team are due by Christmas.">
         </a>
         <p class="tiny muted center">Tap the image to open it full size.</p>
-      </div>
-    </details>
+    </div>
 
     <details class="more">
       <summary>Launch timeline</summary>
@@ -306,6 +304,14 @@ function viewGuide() {
 
     <a class="action" href="${esc(HUB_URL)}" target="_blank" rel="noopener"><div><strong>Missions Hub</strong><span>Books, sermons, videos, prayer and evangelism tools to send</span></div></a>
     </div>`;
+  // One section open at a time: opening a section closes the others.
+  const sections = [...app.querySelectorAll('.guide details')];
+  sections.forEach((d) => d.addEventListener('toggle', () => {
+    if (!d.open) return;
+    sections.forEach((o) => { if (o !== d) o.open = false; });
+    // Closing a long section above can push this one off screen; bring it back.
+    if (d.getBoundingClientRect().top < 0) d.scrollIntoView({ block: 'start' });
+  }));
   app.querySelectorAll('.copy').forEach((b) => {
     b.onclick = async () => {
       try {
