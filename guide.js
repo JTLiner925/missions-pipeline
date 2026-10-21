@@ -225,7 +225,7 @@ export const TIMELINE_HTML = `
 </ol>
 `;
 
-// Driver's Ed: page two of the Discover roadmap, rebuilt for phones. Sign
+// Roadmap Worksheet: page two of the Discover roadmap, rebuilt for phones. Sign
 // pictures are cut from the team's roadmap graphic; the words are typed out.
 const sign = (img, alt, w = 72) => `<img class="de-sign" src="img/${img}" alt="${alt}" style="width:${w}px">`;
 const blanks = (first) => `<div class="de-blanks"><span>${first}</span><span></span><span></span><span></span></div>`;
@@ -270,7 +270,7 @@ export const DRIVERS_ED_HTML = `
 
 <div class="stack-lg">
   <div class="eyebrow">Along the way</div>
-  <div class="stack">${sign('de-signs.png', 'STT, Nations Class and DMT road signs', 200)}
+  <div class="stack">${sign('de-signs.png', 'STT, Nations Class and DMC road signs', 200)}
     <b>Bread and butter</b><p>Recruit to and from here. Use them as often as possible.</p></div>
   <div class="de-row">${sign('de-gate.png', 'Gate arm')}
     <div class="stack"><b>Gate</b><p>Don't skip this step. Where can I off-ramp to? Loving communication.</p></div></div>

@@ -292,13 +292,13 @@ function viewGuide() {
     <div class="stack-lg small">
         <h2>Discover roadmap</h2>
         <a class="roadmap" href="roadmap.png" target="_blank" rel="noopener">
-          <img src="roadmap.png" alt="Discover roadmap: a road from Start through ICT, Stop and Pray, Nations Class, STT, DMT, Yield, Work Area Ahead and back to ICT, with Head, Heart, Hands (4H) as the destination. Applications for ICT are due by Christmas.">
+          <img src="roadmap.png" alt="Discover roadmap: a road from Start through ICT, Stop and Pray, Nations Class, STT, DMC, Yield, Work Area Ahead and back to ICT, with Head, Heart, Hands (4H) as the destination. Applications for ICT are due by Christmas.">
         </a>
         <p class="tiny muted center">Tap the image to open it full size.</p>
     </div>
 
     <details class="more">
-      <summary>Driver's Ed</summary>
+      <summary>Roadmap Worksheet</summary>
       <div class="stack-lg small">${DRIVERS_ED_HTML}</div>
     </details>
 
