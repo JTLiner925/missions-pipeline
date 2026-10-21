@@ -198,7 +198,7 @@ export const GUIDE_HTML = `
 // Launch timeline: the stops a goer plans between starting the nine-month
 // group and launching overseas. Built from the team's launch-timeline worksheet.
 const STOPS = [
-  { title: 'Goer training program', time: '9 months', note: 'The nine-month group (ICT) runs alongside everything below.' },
+  { title: 'ICT', time: '9 months', note: 'The nine-month group runs alongside everything below.' },
   { title: 'Talk with parents and family' },
   { title: 'Talk with church leaders' },
   { title: 'Perspectives course', time: '15 weeks' },
@@ -223,4 +223,67 @@ export const TIMELINE_HTML = `
   </li>`).join('')}
   <li class="tl-end"><b>Launch overseas</b><span class="tiny muted">Launch date: ________</span></li>
 </ol>
+`;
+
+// Driver's Ed: page two of the Discover roadmap, rebuilt for phones. Sign
+// pictures are cut from the team's roadmap graphic; the words are typed out.
+const sign = (img, alt, w = 72) => `<img class="de-sign" src="img/${img}" alt="${alt}" style="width:${w}px">`;
+const blanks = (first) => `<div class="de-blanks"><span>${first}</span><span></span><span></span><span></span></div>`;
+const LIGHT = `<svg class="de-sign" width="44" viewBox="0 0 44 104" aria-hidden="true">
+  <rect x="2" y="2" width="40" height="100" rx="4" fill="#1b1919"/>
+  <text x="22" y="17" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" letter-spacing="1">ICT</text>
+  <line x1="2" y1="22" x2="42" y2="22" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="22" cy="38" r="11" fill="#c8414b"/><circle cx="22" cy="63" r="11" fill="#e3a14f"/><circle cx="22" cy="88" r="11" fill="#2dab68"/>
+</svg>`;
+
+export const DRIVERS_ED_HTML = `
+<div class="stack-lg">
+  <div class="eyebrow">Ready at all times</div>
+
+  <div class="stack center">
+    ${sign('de-4hs.png', 'Head, heart and hands shield with wings', 200)}
+    <b>The 4Hs</b>
+    <span class="tiny muted">Holy Spirit, Head, Heart, Hands</span>
+  </div>
+
+  <div class="stack"><b>Holy Spirit</b>
+    <p>Hearing God? Be patient and gentle, but don't be afraid to challenge them and help them grow.</p></div>
+
+  <div class="stack"><b>Map for head, heart, hands</b>
+    ${sign('de-map.png', 'Map linking head, heart and hands: STT, Nations Class and the 10-week group', 260)}
+    <span class="tiny muted">Big hitters: STT, Nations Class and the 10-week group (DMC).</span></div>
+
+  <div class="stack"><b>Head</b>${blanks('Acts 13–14 study')}</div>
+  <div class="stack"><b>Heart</b>${blanks('Prayercast video')}</div>
+  <div class="stack"><b>Hands</b>${blanks('F.I.S.H. together')}</div>
+</div>
+
+<div class="stack-lg">
+  <div class="eyebrow">On the road</div>
+  <div class="de-row">${sign('de-stop.png', 'Stop, pray sign')}
+    <div class="stack"><b>Stop and pray</b><p>What is helpful for you to pray before every meeting?</p></div></div>
+  <div class="de-row">${sign('de-yield.png', 'Yield sign')}
+    <div class="stack"><b>1–2 meetings</b><p>Yield to the Holy Spirit. Listen and gain awareness of the 4Hs. Lead through asking questions.</p></div></div>
+  <div class="de-row">${sign('de-work.png', 'Work area ahead sign')}
+    <div class="stack"><b>2–5 meetings</b><p>Let's get to work. What in the 4Hs does this person need? No cookie-cutter answers here.</p></div></div>
+</div>
+
+<div class="stack-lg">
+  <div class="eyebrow">Along the way</div>
+  <div class="stack">${sign('de-signs.png', 'STT, Nations Class and DMT road signs', 200)}
+    <b>Bread and butter</b><p>Recruit to and from here. Use them as often as possible.</p></div>
+  <div class="de-row">${sign('de-gate.png', 'Gate arm')}
+    <div class="stack"><b>Gate</b><p>Don't skip this step. Where can I off-ramp to? Loving communication.</p></div></div>
+  <div class="de-row">${sign('de-4h.png', '4H next step marker', 52)}
+    <div class="stack"><b>Next step</b><p>It's our responsibility to partner with the Spirit to present a clear next step in head, heart or hands.</p></div></div>
+  <div class="de-row">${sign('de-phone.png', 'Phone marker', 52)}
+    <div class="stack"><b>Discover engagement</b><p>How's the next step going? Time to meet again?</p></div></div>
+  <div class="de-row">${LIGHT}
+    <div class="stack"><b>ICT</b>
+      <p><b style="color:#c8414b">Red:</b> Why? How can we help?</p>
+      <p><b style="color:#b9772a">Yellow:</b> Create a care plan.</p>
+      <p><b style="color:#1f8a52">Green:</b> Send the ICT application.</p></div></div>
+  <div class="de-start"><div class="de-start-title">START</div><div class="de-checks"></div>
+    <div class="de-start-sub">Lease signed and moved in to start the next ICT</div></div>
+</div>
 `;
