@@ -1,4 +1,5 @@
 import { API_URL, NOTION_URL } from './config.js';
+import { GUIDE_HTML, TEXTS, HUB_URL } from './guide.js';
 
 const DEMO = !API_URL;
 const app = document.getElementById('app');
@@ -138,7 +139,7 @@ function parseHash() {
 const routes = {
   signin: viewSignIn, home: viewHome, find: viewFind, contact: viewContact,
   disco: (p) => viewMeeting('Disco', p), followup: (p) => viewMeeting('Follow-up', p),
-  person: viewPerson,
+  person: viewPerson, guide: viewGuide,
 };
 
 async function render() {
@@ -258,10 +259,48 @@ async function viewHome() {
       </div>
     </div>
 
+    <a class="action" href="#/guide"><div><strong>Disco Guide</strong><span>Meeting outline, follow-up texts, resources</span></div></a>
+
     ${isStaff() ? `<p class="push center small"><a href="${esc(NOTION_URL)}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 16px;font-weight:600">Open full pipeline in Notion</a></p>` : ''}`;
   app.querySelector('#me').onclick = () => {
     if (confirm(`Sign out ${data.me.name}?`)) { saveSession(null); optionsCache = null; go('signin'); }
   };
+}
+
+// ---------- Disco guide ----------
+
+function viewGuide() {
+  app.innerHTML = `
+    ${header('Disco Guide', 'How we run a discovery meeting at The Well')}
+    <div class="stack-lg guide">${GUIDE_HTML}
+
+    <details class="more">
+      <summary>Follow-up texts</summary>
+      <div class="stack-lg small">
+        <p class="muted">Tap Copy, paste into your messages, and fill in the [brackets].</p>
+        ${TEXTS.map((g) => `
+          <div class="stack"><b>${esc(g.group)}</b>
+            ${g.items.map((t) => `
+              <div class="card pad stack">
+                <p class="pre">${esc(t)}</p>
+                <button type="button" class="linkbtn copy" data-text="${esc(t)}">Copy</button>
+              </div>`).join('')}
+          </div>`).join('')}
+      </div>
+    </details>
+
+    <a class="action" href="${esc(HUB_URL)}" target="_blank" rel="noopener"><div><strong>Missions Hub</strong><span>Books, sermons, videos, prayer and evangelism tools to send</span></div></a>
+    </div>`;
+  app.querySelectorAll('.copy').forEach((b) => {
+    b.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(b.dataset.text);
+        toast('Copied');
+      } catch {
+        toast('Could not copy. Press and hold the text to copy it.');
+      }
+    };
+  });
 }
 
 // ---------- Find a person ----------
