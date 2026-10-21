@@ -235,6 +235,7 @@ async function viewHome() {
       <a class="action" href="#/contact"><div><strong>New Contact</strong><span>Someone you just met</span></div></a>
       <a class="action primary" href="#/disco"><div><strong>New Disco Meeting</strong><span>Log a discovery meeting</span></div></a>
       <a class="action" href="#/followup"><div><strong>Follow-up Meeting</strong><span>Notes, next step, follow-up-by date</span></div></a>
+      <a class="action" href="#/guide"><div><strong>Disco Guide</strong><span>Meeting outline, follow-up texts, resources</span></div></a>
     </div>
 
     <div class="stack-lg">
@@ -258,8 +259,6 @@ async function viewHome() {
         <div class="stat"><b class="${data.stats.overdue ? 'warn-text' : ''}">${data.stats.overdue}</b><span>Overdue</span></div>
       </div>
     </div>
-
-    <a class="action" href="#/guide"><div><strong>Disco Guide</strong><span>Meeting outline, follow-up texts, resources</span></div></a>
 
     ${isStaff() ? `<p class="push center small"><a href="${esc(NOTION_URL)}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 16px;font-weight:600">Open full pipeline in Notion</a></p>` : ''}`;
   app.querySelector('#me').onclick = () => {
