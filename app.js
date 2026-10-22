@@ -307,6 +307,11 @@ function viewGuide() {
     </details>
 
     <a class="action" href="${esc(HUB_URL)}" target="_blank" rel="noopener"><div><strong>Missions Hub</strong><span>Books, sermons, videos, prayer and evangelism tools to send</span></div></a>
+
+    <a class="credit" href="https://launchglobal.org" target="_blank" rel="noopener">
+      <span class="tiny muted">Adapted from resources by</span>
+      <img src="img/launch-global.png" alt="Launch Global" width="160" height="34">
+    </a>
     </div>`;
   // One section open at a time: opening a section closes the others.
   const sections = [...app.querySelectorAll('.guide details')];
